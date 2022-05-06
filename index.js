@@ -44,18 +44,25 @@ const run = async () => {
       // console.log(product)
 
     })
-    // GET all products for specific user
-    app.get('/products', async(req, res) => {
+    // GET all products for all or specific user
+    app.get('/products', async (req, res) => {
       const email = req.query.email;
-      const query = {email};
+      console.log()
+      const query = email ? { email } : {};
       const cursor = productsCollection.find(query);
       const allProducts = await cursor.toArray();
 
       res.send(allProducts)
-
-
-
     })
+    // GET all products for specific user
+    // app.get('/products', async(req, res) => {
+    //   const email = req.query.email;
+    //   const query = {email};
+    //   const cursor = productsCollection.find(query);
+    //   const allProducts = await cursor.toArray();
+
+    //   res.send(allProducts)
+    // })
 
   }
   finally {
