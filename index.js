@@ -1,7 +1,7 @@
 // import or require
 const express = require('express');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 // App
@@ -9,6 +9,7 @@ const app = express();
 
 // Middleware
 const cors = require('cors');
+const { ObjectID } = require('bson');
 app.use(cors())
 app.use(express.json())
 
@@ -54,15 +55,31 @@ const run = async () => {
 
       res.send(allProducts)
     })
-    // GET all products for specific user
-    // app.get('/products', async(req, res) => {
-    //   const email = req.query.email;
-    //   const query = {email};
-    //   const cursor = productsCollection.find(query);
-    //   const allProducts = await cursor.toArray();
 
-    //   res.send(allProducts)
-    // })
+    // Update Product
+    app.put('/products:id', async (req, res) => {
+      const productId = req.params.id;
+      const updatedProductData = req.body;
+      const filter = { _id: ObjectId(productId) }
+      const options = { upsert: true };
+
+      const updateProductsDocs = {
+        $set: {
+          email: updatedProductData.email,
+          productName: updatedProductData.productName,
+          productDes: updatedProductData.productDes,
+          productPrice: updatedProductData.productPrice,
+          productQuantity: updatedProductData.productQuantity,
+          productImageLink: updatedProductData.productImageLink,
+          supplierName: updatedProductData.supplierName
+        }
+
+      }
+      const result = await productsCollection.updateOne(filter, updateProductsDocs, options);
+      res.send(result)
+
+    })
+
 
   }
   finally {
