@@ -55,9 +55,18 @@ const run = async () => {
 
       res.send(allProducts)
     })
+    // GET products by ID
+    app.get('/products/:id', async (req, res) => {
+      const productId = req.params.id;
+      const query = { _id: ObjectId(productId) };
+
+      const result = await productsCollection.findOne(query);
+      res.send(result)
+
+    })
 
     // Update Product
-    app.put('/products:id', async (req, res) => {
+    app.put('/products/:id', async (req, res) => {
       const productId = req.params.id;
       const updatedProductData = req.body;
       const filter = { _id: ObjectId(productId) }
@@ -76,6 +85,15 @@ const run = async () => {
 
       }
       const result = await productsCollection.updateOne(filter, updateProductsDocs, options);
+      res.send(result)
+
+    })
+
+    // Delete a Product
+    app.delete('/products/:id', async (req, res) => {
+      const productId = req.params.id;
+      const query = { _id: ObjectId(productId) }
+      result = await productsCollection.deleteOne(query)
       res.send(result)
 
     })
