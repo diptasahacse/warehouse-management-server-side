@@ -36,12 +36,24 @@ const run = async () => {
     const productsCollection = client.db('inventoryManagement').collection('products');
 
     // POST a Product
-    app.post('/products', async(req, res) => {
+    app.post('/products', async (req, res) => {
       const product = req.body;
       const result = await productsCollection.insertOne(product)
 
       res.send(result)
       // console.log(product)
+
+    })
+    // GET all products for specific user
+    app.get('/products', async(req, res) => {
+      const email = req.query.email;
+      const query = {email};
+      const cursor = productsCollection.find(query);
+      const allProducts = await cursor.toArray();
+
+      res.send(allProducts)
+
+
 
     })
 
