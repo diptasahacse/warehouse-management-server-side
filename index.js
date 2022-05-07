@@ -55,7 +55,7 @@ const run = async () => {
 
       res.send(allProducts)
     })
-    // GET products by ID
+    // GET single Product by ID
     app.get('/products/:id', async (req, res) => {
       const productId = req.params.id;
       const query = { _id: ObjectId(productId) };
@@ -65,7 +65,7 @@ const run = async () => {
 
     })
 
-    // Update Product
+    // Update a Product
     app.put('/products/:id', async (req, res) => {
       const productId = req.params.id;
       const updatedProductData = req.body;
@@ -84,6 +84,7 @@ const run = async () => {
         }
 
       }
+      
       const result = await productsCollection.updateOne(filter, updateProductsDocs, options);
       res.send(result)
 
