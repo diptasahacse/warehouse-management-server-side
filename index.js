@@ -56,7 +56,7 @@ const run = async () => {
 
       res.send(allProducts)
     })
-    // GET all products for all or specific user
+    // GET all post
     app.get('/blogs', async (req, res) => {
       const query = {};
       const cursor = blogsCollection.find(query);
@@ -70,6 +70,15 @@ const run = async () => {
       const query = { _id: ObjectId(productId) };
 
       const result = await productsCollection.findOne(query);
+      res.send(result)
+
+    })
+    // GET single Blog by ID
+    app.get('/blogs/:id', async (req, res) => {
+      const blogId = req.params.id;
+      const query = { _id: ObjectId(blogId) };
+
+      const result = await blogsCollection.findOne(query);
       res.send(result)
 
     })
