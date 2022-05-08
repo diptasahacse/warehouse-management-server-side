@@ -35,6 +35,7 @@ const run = async () => {
   try {
     await client.connect();
     const productsCollection = client.db('inventoryManagement').collection('products');
+    const blogsCollection = client.db('inventoryBlogs').collection('blogs');
 
     // POST a Product
     app.post('/products', async (req, res) => {
@@ -48,12 +49,20 @@ const run = async () => {
     // GET all products for all or specific user
     app.get('/products', async (req, res) => {
       const email = req.query.email;
-      console.log()
+      
       const query = email ? { email } : {};
       const cursor = productsCollection.find(query);
       const allProducts = await cursor.toArray();
 
       res.send(allProducts)
+    })
+    // GET all products for all or specific user
+    app.get('/blogs', async (req, res) => {
+      const query = {};
+      const cursor = blogsCollection.find(query);
+      const allBlogs = await cursor.toArray();
+
+      res.send(allBlogs)
     })
     // GET single Product by ID
     app.get('/products/:id', async (req, res) => {
@@ -64,7 +73,7 @@ const run = async () => {
       res.send(result)
 
     })
-
+    
     // Update a Product
     app.put('/products/:id', async (req, res) => {
       const productId = req.params.id;
